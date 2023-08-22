@@ -1,13 +1,18 @@
+use egui::{Widget, Ui, Vec2};
+
 /// We derive Deserialize/Serialize so we can persist app state on shutdown.
+use crate::array::{self, Array};
 #[derive(serde::Deserialize, serde::Serialize)]
 #[serde(default)] // if we add new fields, give them default values when deserializing old state
 pub struct TemplateApp {
     // Example stuff:
     label: String,
-
     // this how you opt-out of serialization of a member
     #[serde(skip)]
     value: f32,
+    #[serde(skip)]
+    array:Array,
+
 }
 
 impl Default for TemplateApp {
@@ -16,6 +21,7 @@ impl Default for TemplateApp {
             // Example stuff:
             label: "Hello World!".to_owned(),
             value: 2.7,
+            array: Array::new(20,100.,Vec2::new(100.,100.)),
         }
     }
 }
@@ -45,7 +51,7 @@ impl eframe::App for TemplateApp {
     /// Called each time the UI needs repainting, which may be many times per second.
     /// Put your widgets into a `SidePanel`, `TopPanel`, `CentralPanel`, `Window` or `Area`.
     fn update(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
-        let Self { label, value } = self;
+        let Self { label, value , array} = self;
 
         // Examples of how to create different panels and windows.
         // Pick whichever suits you.
@@ -94,13 +100,6 @@ impl eframe::App for TemplateApp {
 
         egui::CentralPanel::default().show(ctx, |ui| {
             // The central panel the region left after adding TopPanel's and SidePanel's
-
-            ui.heading("eframe template");
-            ui.hyperlink("https://github.com/emilk/eframe_template");
-            ui.add(egui::github_link_file!(
-                "https://github.com/emilk/eframe_template/blob/master/",
-                "Source code."
-            ));
             egui::warn_if_debug_build(ui);
         });
 
