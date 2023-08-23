@@ -10,7 +10,7 @@ fn main() -> eframe::Result<()> {
     eframe::run_native(
         "eframe template",
         native_options,
-        Box::new(|cc| Box::new(sortingvisualizer::TemplateApp::new(cc))),
+        Box::new(|cc| Box::new(sortingvisualizer::MyApp::new(cc))),
     )
 }
 
