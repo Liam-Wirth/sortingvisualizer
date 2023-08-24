@@ -41,16 +41,10 @@ impl eframe::App for MyApp {
         egui::CentralPanel::default().show(ctx, |ui| {
             // The central panel the region left after adding TopPanel's and SidePanel's
             egui::warn_if_debug_build(ui);
-             
             if self.array.init {
-                if self.sort.is_none(){
-                    //HACK: clone so that the elements dont get consumed cause otherwise I'd use a
-                    //borrow but then i'd need to set lifetimes and that is confusing
-                    self.set_sort(Box::new(BubbleSort::new(self.array.get_elements().clone())))
-                }
                 let draw = convert_array( &self.array.get_elements(), ui);
                 ui.painter().extend(draw.clone());
-                //TODO: need to update the sort thingy
+                
             }
         });
 

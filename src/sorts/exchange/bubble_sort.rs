@@ -1,24 +1,47 @@
 // Import necessary modules
 use crate::array::Array;
 use crate::sorts::algorithm::{Algorithm, Complexity, Info};
+use crate::sorts::is_sorted;
 
 // Define the BubbleSort struct that implements Algorithm trait
-pub struct BubbleSort;
+//thinking about how this works, it'd make more sense right now at least for bubble sort to be
+//called once every frame count, so I want to think about how I could preserve the state of things
+//so that the sort only runs once per call, but maintains it's progress. 
+//
+//NOTE: I might have a genius idea
+pub struct BubbleSort {
+    //Keep the state/step it is on (probably takes ownership of this right?)
+    array: Vec<u32>,
+    index:  usize,
+    sorted: bool,
+}
 
-impl Algorithm for BubbleSort {
-    fn sort(&self, mut array: Array) {
-        let n = array.len();
-        for i in 0..n {
-            for j in 0..n - i - 1 {
-                if array.get_element(j) > array.get_element(j+1){
-                    array.swap(j, j + 1);
-
-                    // Add a short delay for visualization purposes
-                    std::thread::sleep(std::time::Duration::from_millis(50));
-                }
-            }
+impl BubbleSort {
+    pub fn new(mut array: Vec<u32>) -> Self {
+        BubbleSort{
+            array,
+            index: 0,
+            sorted: true,
         }
     }
+}
+
+impl Algorithm for BubbleSort {
+   fn step(&mut self)-> Vec<u32> {
+       if self.sorted {
+            return self.array.clone()
+        }
+        let n = self.array.len();
+        if self.index >= n - 1 {
+            //check to see if it is sorted
+            if is_sorted(&self.array) {return self.array.clone()} else { self.index = 0;};
+        };
+        if self.array.get(self.index) > self.array.get(self.index + 1) {
+            self.array.swap(self.index, self.index+1);
+        };
+        self.index += 1;
+        self.array.clone()
+ } 
 
     fn name(&self) -> String {
         String::from("Bubble Sort")
@@ -33,3 +56,4 @@ impl Algorithm for BubbleSort {
         }
     }
 }
+

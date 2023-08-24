@@ -43,7 +43,7 @@ impl Complexity {
 pub trait Algorithm {
     /// Sorts a given [array](crate::array::Array). This method is called in a so
     /// called "algorithm thread".
-    fn sort(&self, array: Array);
+    fn step(&mut self)-> Vec<u32>;
     /// Returns the name of the algorithm that will be displayed to the user.
     /// Returned value is an owned [String] so it can be generated at runtime.
     fn name(&self) -> String;

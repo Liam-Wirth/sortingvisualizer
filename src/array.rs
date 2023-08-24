@@ -7,6 +7,7 @@ use rand::Rng;
 //TODO: refactor this code so as to just handle f32s as the "height" variable, maybe better to even
 //normalize them to like be between 0-1 and then just multiply that out to whatever the size of the
 //window frame is? dunno
+#[derive(Clone)]
 pub struct Array {
     elements: Vec<u32>,
     element_width: f32,
@@ -45,7 +46,7 @@ impl Array {
     pub fn new(size: usize) -> Self {
         let mut rng = thread_rng();
         let mut elements: Vec<u32> = Vec::new();
-        for i in (1..size) {
+        for i in 1..size {
             elements.push(i as u32);
         }
         elements.shuffle(&mut rng);
@@ -55,16 +56,12 @@ impl Array {
             element_width: 2.0,
             init: true,
         }
-
     }
     pub fn shuffle(&mut self) {
         let mut rng = rand::thread_rng();
         self.elements.shuffle(&mut rng);
     }
-    pub fn is_sorted(&self) -> bool {
-        self.elements.windows(2).all(|w| w[0] <= w[1])
-    }
-    pub fn swap(&mut self, i: usize, j: usize) {
+        pub fn swap(&mut self, i: usize, j: usize) {
         self.elements.swap(i, j);
     }
     pub fn get_element(&self, index: usize) -> u32 {
@@ -81,6 +78,9 @@ impl Array {
     }
     pub fn get_elements(&self) -> Vec<u32> {
         self.elements.clone()
+    }
+    pub fn set_elements(&mut self, elements: Vec<u32>) {
+        self.elements = elements;
     }
     /*
     pub fn draw(&self, ui: &mut egui::Ui) {

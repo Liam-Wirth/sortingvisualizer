@@ -1,13 +1,14 @@
 pub mod algorithm;
+pub mod concurrent;
+pub mod distribute;
+pub mod exchange;
+pub mod hybrid;
+pub mod insert;
+pub mod merge;
+pub mod misc;
+pub mod quick;
+pub mod select;
+pub fn is_sorted(elements: &Vec<u32>) -> bool {
+        elements.windows(2).all(|w| w[0] <= w[1])
+    }
 
-
-
-
-pub fn gen_rand_vec<'a>(n: usize) -> Vec<u64> {
-    let start = 5;
-    let mut values: Vec<u64> = (start..n as u64 + start).collect();
-    let mut rng = rand::thread_rng();
-    values.shuffle(&mut rng);
-
-    values
-}
