@@ -6,41 +6,49 @@ use crate::sorts::is_sorted;
 // Define the BubbleSort struct that implements Algorithm trait
 //thinking about how this works, it'd make more sense right now at least for bubble sort to be
 //called once every frame count, so I want to think about how I could preserve the state of things
-//so that the sort only runs once per call, but maintains it's progress. 
+//so that the sort only runs once per call, but maintains it's progress.
 //
 pub struct BubbleSort {
     //Keep the state/step it is on (probably takes ownership of this right?)
-    array: Vec<u32>,
-    index:  usize,
+    //array: Vec<u32>,
+    index: usize,
     sorted: bool,
+    max_index: usize,
 }
 
 impl BubbleSort {
-    pub fn new(mut array: Vec<u32>) -> Self {
-        BubbleSort{
-            array,
+    pub fn new(len: usize) -> Self {
+        println!("{len}");
+        BubbleSort {
+            //array,
             index: 0,
+            max_index: len,
             sorted: false,
         }
     }
 }
 
 impl Algorithm for BubbleSort {
-   fn step(&mut self)-> Vec<u32> {
-       if self.sorted {
-            return self.array.clone()
+    fn step(&mut self, elements: &mut [u32]) -> bool {
+        if self.sorted {
+            return true 
         }
-        let n = self.array.len();
-        if self.index >= n - 1 {
+        if self.index >= self.max_index - 1{
+        self.max_index -=1;
             //check to see if it is sorted
-            if is_sorted(&self.array) {return self.array.clone()} else { self.index = 0;};
+            if is_sorted(elements) {
+                return true
+            } else {
+                self.index = 0;
+            };
         };
-        if self.array.get(self.index) > self.array.get(self.index + 1) {
-            self.array.swap(self.index, self.index+1);
+        if elements.get(self.index) > elements.get(self.index + 1) {
+            elements.swap(self.index, self.index + 1);
         };
         self.index += 1;
-        self.array.clone()
- } 
+        self.sorted = is_sorted(elements);
+        self.sorted
+    }
 
     fn name(&self) -> String {
         String::from("Bubble Sort")
@@ -55,4 +63,3 @@ impl Algorithm for BubbleSort {
         }
     }
 }
-

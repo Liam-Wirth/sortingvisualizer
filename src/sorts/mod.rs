@@ -8,7 +8,7 @@ pub mod merge;
 pub mod misc;
 pub mod quick;
 pub mod select;
-pub fn is_sorted(elements: &Vec<u32>) -> bool {
+pub fn is_sorted(elements: &[u32]) -> bool {
         elements.windows(2).all(|w| w[0] <= w[1])
     }
 

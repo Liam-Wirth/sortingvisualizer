@@ -1,3 +1,5 @@
+use std::time::Duration;
+
 use egui::{Ui, Pos2, Color32, Shape};
 use eframe::{egui};
 use egui::Vec2;
@@ -21,7 +23,7 @@ impl Default for MyApp {
     fn default() -> Self {
         Self {
             label: "SortingVisualizer".to_owned(),
-            array: Array::new(20),
+            array: Array::new(100),
             sort: None,
         }
     }
@@ -41,17 +43,25 @@ impl eframe::App for MyApp {
         egui::CentralPanel::default().show(ctx, |ui| {
             // The central panel the region left after adding TopPanel's and SidePanel's
             egui::warn_if_debug_build(ui);
-             
+            //NOTE: this is from the egui discord, I'm pretty sure this operates independant of any other panels, and should control the speed
+            //TODO: see if it is possible to implement a slider in another panel that adjusts the speed of this value
+            let deltatime = ui.ctx().input(|i| i.stable_dt); 
             if self.array.init {
                 if self.sort.is_none(){
                     //HACK: clone so that the elements dont get consumed cause otherwise I'd use a
                     //borrow but then i'd need to set lifetimes and that is confusing
-                    self.set_sort(Box::new(BubbleSort::new(self.array.get_elements().clone())))
+                    self.set_sort(Box::new(BubbleSort::new(self.array.elements.len())))
                 }
-                let draw = convert_array( &self.array.get_elements(), ui);
+                let draw = convert_array( &self.array.elements, ui);
                 ui.painter().extend(draw.clone());
-                //TODO: need to update the sort thingy
+                let sorted = if let Some(sort) = self.sort.as_mut() {
+                    sort.step(&mut self.array.elements);
+                    ctx.request_repaint_after(Duration::from_micros(100));
+                } else {
+                    false;
+                };
             }
+            
         });
 
         if false {

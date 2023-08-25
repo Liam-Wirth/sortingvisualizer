@@ -1,4 +1,4 @@
-use crate::array::Array;
+use crate::array::{Array, self};
 pub struct Info {
     pub name: String,
     pub description: String,
@@ -40,10 +40,12 @@ impl Complexity {
     }
 }
 
+//NOTE: iterator is a good idea to reference, not copy, iter.next is roughly analogous to .step
 pub trait Algorithm {
     /// Sorts a given [array](crate::array::Array). This method is called in a so
     /// called "algorithm thread".
-    fn step(&mut self)-> Vec<u32>;
+    //TODO: dont use array LOLE!
+    fn step(&mut self,elements: &mut [u32]) -> bool;
     /// Returns the name of the algorithm that will be displayed to the user.
     /// Returned value is an owned [String] so it can be generated at runtime.
     fn name(&self) -> String;

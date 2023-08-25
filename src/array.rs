@@ -9,9 +9,9 @@ use rand::Rng;
 //window frame is? dunno
 #[derive(Clone)]
 pub struct Array {
-    elements: Vec<u32>,
-    element_width: f32,
-    element_gap: f32,
+    pub elements: Vec<u32>,
+    //element_width: f32,
+    //element_gap: f32,
     pub init: bool,
 }
 
@@ -52,8 +52,8 @@ impl Array {
         elements.shuffle(&mut rng);
         Array {
             elements,
-            element_gap: 2.0,
-            element_width: 2.0,
+            //element_gap: 2.0,
+            //element_width: 2.0,
             init: true,
         }
     }
