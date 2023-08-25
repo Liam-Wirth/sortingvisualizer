@@ -1,0 +1,24 @@
+maybe remove the array data type? like its kinda depricated code now,
+I dont even think I'm using it
+
+problem:
+Vector is initialized, and I need to be able to store state
+ dont even think I'm using itoos initialized, and I need to be able to store state  
+ of the vector across different things
+ 
+
+
+
+
+
+ --ideas
+ maybe wrap all sorting algorithms inside of an iterator?
+    How do I do that?
+    I feel like this may be better than just having that dumb struct
+    that weirdly holds state, cause doesnt an iterator hold it's own state?
+
+
+
+if something doesnt need to hold data, dont make it.
+
+

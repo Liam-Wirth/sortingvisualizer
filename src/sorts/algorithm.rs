@@ -16,6 +16,7 @@ pub enum Complexity {
     Quadratic,
     Cubic,
     Exponential,
+    Unbounded,
 }
 
 impl Complexity {
@@ -26,6 +27,7 @@ impl Complexity {
     const QUADRATIC: (&'static str, &'static str) = ("O(n^2)", "Quadratic");
     const CUBIC: (&'static str, &'static str) = ("O(n^3)", "Cubic");
     const EXPONENTIAL: (&'static str, &'static str) = ("O(2^n)", "Exponential");
+    const UNBOUNDED: (&'static str, &'static str) = ("O(n*n!)", "Unbounded");
 
     pub fn get_formula_and_name(&self) -> (&'static str, &'static str) {
         match self {
@@ -36,6 +38,7 @@ impl Complexity {
             Complexity::Quadratic => Self::QUADRATIC,
             Complexity::Cubic => Self::CUBIC,
             Complexity::Exponential => Self::EXPONENTIAL,
+            Complexity::Unbounded => Self::UNBOUNDED,
         }
     }
 }
@@ -45,7 +48,7 @@ pub trait Algorithm {
     /// Sorts a given [array](crate::array::Array). This method is called in a so
     /// called "algorithm thread".
     //TODO: dont use array LOLE!
-    fn step(&mut self,elements: &mut [u32]) -> bool;
+    fn step(&mut self,elements: &mut [u32]) -> (bool,&usize);
     /// Returns the name of the algorithm that will be displayed to the user.
     /// Returned value is an owned [String] so it can be generated at runtime.
     fn name(&self) -> String;

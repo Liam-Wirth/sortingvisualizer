@@ -11,14 +11,14 @@ use crate::sorts::is_sorted;
 pub struct BubbleSort {
     //Keep the state/step it is on (probably takes ownership of this right?)
     //array: Vec<u32>,
-    index: usize,
+    pub index: usize,
     sorted: bool,
     max_index: usize,
 }
 
 impl BubbleSort {
     pub fn new(len: usize) -> Self {
-        println!("{len}");
+        //println!("{len}");
         BubbleSort {
             //array,
             index: 0,
@@ -29,15 +29,15 @@ impl BubbleSort {
 }
 
 impl Algorithm for BubbleSort {
-    fn step(&mut self, elements: &mut [u32]) -> bool {
+    fn step(&mut self, elements: &mut [u32]) -> (bool,&usize) {
         if self.sorted {
-            return true 
+            return (true,&self.index) 
         }
         if self.index >= self.max_index - 1{
         self.max_index -=1;
             //check to see if it is sorted
             if is_sorted(elements) {
-                return true
+                return (true,&self.index) 
             } else {
                 self.index = 0;
             };
@@ -47,7 +47,7 @@ impl Algorithm for BubbleSort {
         };
         self.index += 1;
         self.sorted = is_sorted(elements);
-        self.sorted
+        (self.sorted, &self.index)
     }
 
     fn name(&self) -> String {
