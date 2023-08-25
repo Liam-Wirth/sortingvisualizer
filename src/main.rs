@@ -6,7 +6,12 @@
 fn main() -> eframe::Result<()> {
     env_logger::init(); // Log to stderr (if you run with `RUST_LOG=debug`).
 
-    let native_options = {eframe::NativeOptions{vsync:false, ..Default::default()}};
+    let native_options = {
+        eframe::NativeOptions {
+            vsync: false,
+            ..Default::default()
+        }
+    };
     eframe::run_native(
         "eframe template",
         native_options,

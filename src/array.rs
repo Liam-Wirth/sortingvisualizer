@@ -61,7 +61,7 @@ impl Array {
         let mut rng = rand::thread_rng();
         self.elements.shuffle(&mut rng);
     }
-        pub fn swap(&mut self, i: usize, j: usize) {
+    pub fn swap(&mut self, i: usize, j: usize) {
         self.elements.swap(i, j);
     }
     pub fn get_element(&self, index: usize) -> u32 {
