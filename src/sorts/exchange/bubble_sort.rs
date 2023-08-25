@@ -8,7 +8,6 @@ use crate::sorts::is_sorted;
 //called once every frame count, so I want to think about how I could preserve the state of things
 //so that the sort only runs once per call, but maintains it's progress. 
 //
-//NOTE: I might have a genius idea
 pub struct BubbleSort {
     //Keep the state/step it is on (probably takes ownership of this right?)
     array: Vec<u32>,
@@ -21,7 +20,7 @@ impl BubbleSort {
         BubbleSort{
             array,
             index: 0,
-            sorted: true,
+            sorted: false,
         }
     }
 }
