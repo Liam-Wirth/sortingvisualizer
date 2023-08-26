@@ -4,9 +4,7 @@ use rand::seq::SliceRandom;
 use rand::thread_rng;
 use rand::Rng;
 
-//TODO: refactor this code so as to just handle f32s as the "height" variable, maybe better to even
-//normalize them to like be between 0-1 and then just multiply that out to whatever the size of the
-//window frame is? dunno
+//TODO: Possibly remove this file I dont really think I need it 
 #[derive(Clone)]
 pub struct Array {
     pub elements: Vec<u32>,

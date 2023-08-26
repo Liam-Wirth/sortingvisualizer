@@ -20,3 +20,16 @@ try re implementing it all using just bevy, maybe that will be faster?
 if something doesnt need to hold data, dont make it.
 
 
+
+
+to implement:
+multithread
+Print a lot of the info to the top left of the screen
+sound/ a beeper
+secondary panel holding all the settings/drop down menus
+sweep animation after the algorithm is sorted
+have the array be generated as a sorted array, and animate the shuffling the same way arrayV does
+be able to assign a different color value to each rectangle
+be able to restart the algorithm
+possibly show a cursor/where the thing is in the index that is animated as a different shape, instead of 
+just highlighting the current rectangle red
