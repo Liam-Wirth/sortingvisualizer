@@ -27,7 +27,7 @@ impl Default for MyApp {
     fn default() -> Self {
         Self {
             label: "SortingVisualizer".to_owned(),
-            array: Array::new(2000),
+            array: Array::new(500),
             sort: None,
         }
     }

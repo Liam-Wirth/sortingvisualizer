@@ -1,21 +1,19 @@
 maybe remove the array data type? like its kinda depricated code now,
 I dont even think I'm using it
 
-problem:
-Vector is initialized, and I need to be able to store state
- dont even think I'm using itoos initialized, and I need to be able to store state  
- of the vector across different things
- 
+try re implementing it all using just bevy, maybe that will be faster?
+    or multithread the algorithms lol! that is probably the play, because then the rate at which
+    the algorithm runs is entirely independant from the "update" function, and instead, things work
+    the other way around where the update function basically just runs with every time the array is updated
 
 
 
 
 
- --ideas
- maybe wrap all sorting algorithms inside of an iterator?
-    How do I do that?
-    I feel like this may be better than just having that dumb struct
-    that weirdly holds state, cause doesnt an iterator hold it's own state?
+
+
+
+
 
 
 
