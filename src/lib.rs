@@ -1,8 +1,9 @@
 #![allow(unused_imports)]
 #![warn(clippy::all, rust_2018_idioms)]
 
-mod app;
 pub use app::MyApp;
+pub mod state;
+pub mod app;
 pub mod array;
 mod sorts;
 use sorts::{

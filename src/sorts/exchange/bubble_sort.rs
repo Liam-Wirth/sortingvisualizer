@@ -27,7 +27,7 @@ impl BubbleSort {
         }
     }
 }
-
+/*
 impl Algorithm for BubbleSort {
     fn step(&mut self, elements: &mut [u32]) -> (bool, &usize) {
         if self.sorted {
@@ -62,4 +62,4 @@ impl Algorithm for BubbleSort {
             method: String::from("bubble::sort"),
         }
     }
-}
+}*/

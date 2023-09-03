@@ -1,88 +1,99 @@
-use egui::{Color32, Pos2, Shape, Ui, Vec2};
-use rand;
+use egui::Color32;
 use rand::seq::SliceRandom;
-use rand::thread_rng;
-use rand::Rng;
+//NOTE: this is the thing that I edit if I am ever working on my shit and realize "ruh roh, I need
+//to be able to do this thing, but cant currently do this thing"
 
-//TODO: Possibly remove this file I dont really think I need it 
-#[derive(Clone)]
-pub struct Array {
-    pub elements: Vec<u32>,
-    //element_width: f32,
-    //element_gap: f32,
-    pub init: bool,
-}
+use crate::state::SharedState;
+#[derive(Debug, Clone)]
+pub struct Array(SharedState);
 
 impl Array {
-    /*
-    pub fn new(size: usize, ui: Ui) -> Self {
-        let mut rng = thread_rng();
-        let mut elements: Vec<Shape> = Vec::new();
-        let element_gap = 2.0;
-        let element_width = ui.available_width() / size as f32;
+    pub fn new(state: SharedState) -> Self {
+        Array(state)
+    }
+    ///Puts the current thread to sleep for specified amount of time, and blocks the thread if the
+    ///animation is paused
+    pub fn wait(&self, ms: u64) {
+        use std::thread;
+        use std::time::Duration;
+        // state must be locked for as short as possible so we shouldn't keep it
+        // locked while sleeping (`thread::sleep` and `thread::park`)
+        thread::sleep(Duration::from_micros({
+            let state = self.0.get(); //NOTE: this is locking the shared state and giving ownership
+                                      //of it to this variable
+            (ms as f64 * 1000.0 / state.speed) as u64
+        }));
+        let paused = {
+            let state = self.0.get();
+            state.paused
+        };
 
-        let mut x = 0.0;
-        for _ in 0..size {
-            let height = rng.gen_range(1..=size) as f32 / size as f32 * ui.available_size().y;
-            let rect = egui::Rect::from_min_size(
-                Pos2::new(x, ui.available_size().y - height),
-                Vec2::new(element_width - 2.0, height),
-            );
-            let out = Shape::rect_filled(rect, 0.0, Color32::from_rgb(100, 100, 100));
-            elements.push(out);
-            x += element_width;
-        }
-        let init = true;
-        Array {
-            elements,
-            element_width,
-            element_gap,
-            init,
+        if paused {
+            thread::park();
         }
     }
-    */
-    pub fn new(size: usize) -> Self {
-        let mut rng = thread_rng();
-        let mut elements: Vec<u32> = Vec::new();
-        for i in 1..size {
-            elements.push(i as u32);
-        }
-        elements.shuffle(&mut rng);
-        Array {
-            elements,
-            //element_gap: 2.0,
-            //element_width: 2.0,
-            init: true,
-        }
-    }
-    pub fn shuffle(&mut self) {
-        let mut rng = rand::thread_rng();
-        self.elements.shuffle(&mut rng);
-    }
-    pub fn swap(&mut self, i: usize, j: usize) {
-        self.elements.swap(i, j);
-    }
-    pub fn get_element(&self, index: usize) -> u32 {
-        self.elements[index].clone()
-    }
+    //NOTE: This is the beginning of more API type stuff :)
+    /// Returns the length of the underlying vector in state
     pub fn len(&self) -> usize {
-        self.elements.len()
+        let state = self.0.get();
+        state.array.len()
     }
-    pub fn remove(&mut self, index: usize) {
-        if index > self.len() {
-            return;
-        }
-        self.elements.remove(index);
+    pub fn get(&self, index: usize) -> u32 {
+        let mut state = self.0.get();
+        let value = state.array[index];
+        //Incrementing reads
+        self.increment_reads();
+        state.array_accesses[index] = state.time;
+        value
     }
-    pub fn get_elements(&self) -> Vec<u32> {
-        self.elements.clone()
+
+    /// Sets a value of the at a given index.
+    pub fn set(&self, index: usize, value: u32) {
+        let mut state = self.0.get();
+        state.array[index] = value;
+        self.increment_writes();
+        state.array_accesses[index] = state.time;
     }
-    pub fn set_elements(&mut self, elements: Vec<u32>) {
-        self.elements = elements;
+    pub fn swap(&self, a: usize, b: usize) {
+        let mut state = self.0.get();
+        state.array.swap(a, b);
+        self.increment_writes();
     }
-    /*
-    pub fn draw(&self, ui: &mut egui::Ui) {
-        ui.painter().extend(self.elements.clone());
+    pub fn shuffle(&self) {
+        use rand::{thread_rng, Rng};
+        let mut state = self.0.get();
+        let mut rng = rand::thread_rng();
+        state.array.shuffle(&mut rng);
     }
-    */
+    pub fn remove_element(&self, index: usize) -> u32 {
+        let mut state = self.0.get();
+        state.array.remove(index)
+    }
+
+    pub fn increment_reads(&self) {
+        let mut state = self.0.get();
+        state.array_reads += 1;
+        state.array_access_count += 1;
+    }
+
+    pub fn increment_writes(&self) {
+        let mut state = self.0.get();
+        state.array_writes += 1;
+        state.array_access_count += 1;
+    }
+    /// Resets color of the value at a given index (sets it to the transparent
+    /// color).
+    ///
+    /// _See_ [`State.colors`](crate::state::State::colors)
+    pub fn reset_color(&self, index: usize) {
+        self.set_color(index, Color32::TRANSPARENT);
+    }
+
+    /// Sets color of the value at a given index.
+    ///
+    /// _See_ [`State.colors`](crate::state::State::colors)
+    pub fn set_color(&self, index: usize, color: Color32) {
+        let mut state = self.0.get();
+        state.colors[index] = color;
+    }
 }

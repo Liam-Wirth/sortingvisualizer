@@ -1,4 +1,5 @@
 use crate::array::{self, Array};
+use core::{fmt,fmt::Debug,fmt::Formatter};
 pub struct Info {
     pub name: String,
     pub description: String,
@@ -44,14 +45,15 @@ impl Complexity {
 }
 
 //NOTE: iterator is a good idea to reference, not copy, iter.next is roughly analogous to .step
-pub trait Algorithm {
-    /// Sorts a given [array](crate::array::Array). This method is called in a so
-    /// called "algorithm thread".
-    //TODO: dont use array LOLE!
-    fn step(&mut self, elements: &mut [u32]) -> (bool, &usize);
+pub trait Algorithm : Debug{
+    /// Sorts a given [array](crate::array::Array). This method is called in a so called "Algorithm
+    /// Thread"
+    fn sort(&self, array: Array);
     /// Returns the name of the algorithm that will be displayed to the user.
     /// Returned value is an owned [String] so it can be generated at runtime.
-    fn name(&self) -> String;
+    fn name(&self) -> String; 
     //todo get it to return the info and stuff of the algorithm?
-    fn info(&self) -> Info;
+    fn info(&self) -> Info {
+        self.info()
+    }
 }

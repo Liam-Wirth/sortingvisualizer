@@ -17,3 +17,11 @@ pub fn shuffle(elements: &mut [u32]) {
     let mut rng = rand::thread_rng();
     elements.shuffle(&mut rng);
 }
+pub fn remove_element_at_index<T>(slice: &mut Vec<T>, index: usize) -> Result<T, &'static str> {
+    if index < slice.len() {
+        // Remove and return the element at the specified index
+        Ok(slice.remove(index))
+    } else {
+        Err("Index out of bounds")
+    }
+}
