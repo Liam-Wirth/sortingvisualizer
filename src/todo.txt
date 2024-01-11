@@ -36,3 +36,4 @@ just highlighting the current rectangle red
 have like a drop down menu so that the user could write their own 
 implementations of any sorting algorithm they want in lua OR rust,
 and have the visualizer be able to animate their code
+Sysiphus sort

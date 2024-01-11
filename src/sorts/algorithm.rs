@@ -45,10 +45,10 @@ impl Complexity {
 }
 
 //NOTE: iterator is a good idea to reference, not copy, iter.next is roughly analogous to .step
-pub trait Algorithm : Debug{
+pub trait Algorithm  {
     /// Sorts a given [array](crate::array::Array). This method is called in a so called "Algorithm
     /// Thread"
-    fn sort(&self, array: Array);
+    fn sort(&self, array: Array) -> bool;
     /// Returns the name of the algorithm that will be displayed to the user.
     /// Returned value is an owned [String] so it can be generated at runtime.
     fn name(&self) -> String; 

@@ -13,15 +13,14 @@ pub mod select;
 pub fn is_sorted(elements: &[u32]) -> bool {
     elements.windows(2).all(|w| w[0] <= w[1])
 }
-pub fn shuffle(elements: &mut [u32]) {
-    let mut rng = rand::thread_rng();
-    elements.shuffle(&mut rng);
-}
-pub fn remove_element_at_index<T>(slice: &mut Vec<T>, index: usize) -> Result<T, &'static str> {
-    if index < slice.len() {
-        // Remove and return the element at the specified index
-        Ok(slice.remove(index))
-    } else {
-        Err("Index out of bounds")
-    }
+//TODO: Look into writing like a proc macro or something that automatically updates a table with
+//all the currently implemented algorithms? for now I'm just gonna hard code it
+
+//NOTE: technically two ways I could handle this, for now I think i'm just gonna
+//go the route of just using an enum, cause that's just simpler, and then maybe i'll
+//write an impl for the enum that actually pulls stuff from it
+
+pub enum algs {
+    BubbleSort,
+    StalinSort,
 }

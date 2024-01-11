@@ -16,7 +16,7 @@ pub struct BubbleSort {
 }
 //TODO: Make sure that this exists within it's own thread
 impl BubbleSort {
-    pub fn new() -> Self {
+    pub fn new(len: usize) -> Self {
         //println!("{len}");
         BubbleSort {
             //array,
@@ -27,7 +27,6 @@ impl BubbleSort {
 }
 impl Algorithm for BubbleSort {
     fn sort(&self, array: Array) -> bool {
-        let index = array.len();
         while(!self.sorted){
             
         }

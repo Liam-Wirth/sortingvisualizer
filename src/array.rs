@@ -3,7 +3,7 @@ use rand::seq::SliceRandom;
 //NOTE: this is the thing that I edit if I am ever working on my shit and realize "ruh roh, I need
 //to be able to do this thing, but cant currently do this thing"
 
-use crate::state::SharedState;
+use crate::state::*;
 #[derive(Debug, Clone)]
 pub struct Array(SharedState);
 
@@ -59,12 +59,14 @@ impl Array {
         state.array.swap(a, b);
         self.increment_writes();
     }
+    //TODO: Refactor this so that its more of a procedural thing that could be animated?
     pub fn shuffle(&self) {
         use rand::{thread_rng, Rng};
         let mut state = self.0.get();
         let mut rng = rand::thread_rng();
         state.array.shuffle(&mut rng);
     }
+    //Removes an element at the given index, and returns the removed element to the user
     pub fn remove_element(&self, index: usize) -> u32 {
         let mut state = self.0.get();
         state.array.remove(index)
@@ -95,5 +97,14 @@ impl Array {
     pub fn set_color(&self, index: usize, color: Color32) {
         let mut state = self.0.get();
         state.colors[index] = color;
+    }
+    pub fn regen_array(&self, len: usize){
+        let mut state = self.0.get();
+        //It's pointless IMO to have the array visualize from 0..len cause 0 could never be drawn
+        state.array = vec![1..len];
+        state.array_accesses = vec![NO_ARRAY_ACCESS; len];
+        state.array_reads = 0;
+        state.array_writes = 0;
+        state.array_accesses = 0;
     }
 }
