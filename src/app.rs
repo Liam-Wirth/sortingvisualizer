@@ -27,7 +27,7 @@ impl Default for MyApp {
     fn default() -> Self {
         Self {
             label: "SortingVisualizer".to_owned(),
-            array: Array::new(2000),
+            array: Array::new(20),
             sort: None,
         }
     }
@@ -54,7 +54,8 @@ impl eframe::App for MyApp {
                 if self.sort.is_none() {
                     //HACK: clone so that the elements dont get consumed cause otherwise I'd use a
                     //borrow but then i'd need to set lifetimes and that is confusing
-                    self.set_sort(Box::new(BubbleSort::new(self.array.len())));
+                    //NOTE: jesus christ wtf was I smoking
+                    self.set_sort(Box::new(BogoSort::new(self.array.len())));
                 }
                 let sorted: (bool, &usize) = if let Some(sort) = self.sort.as_mut() {
                     sort.step(&mut self.array.elements)
