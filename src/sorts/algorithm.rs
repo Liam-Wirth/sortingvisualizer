@@ -1,4 +1,4 @@
-use crate::array::{self, Array};
+use crate::array::{Array, self};
 pub struct Info {
     pub name: String,
     pub description: String,
@@ -48,7 +48,7 @@ pub trait Algorithm {
     /// Sorts a given [array](crate::array::Array). This method is called in a so
     /// called "algorithm thread".
     //TODO: dont use array LOLE!
-    fn step(&mut self, elements: &mut [u32]) -> (bool, &usize);
+    fn step(&mut self,elements: &mut [u32]) -> (bool,&usize);
     /// Returns the name of the algorithm that will be displayed to the user.
     /// Returned value is an owned [String] so it can be generated at runtime.
     fn name(&self) -> String;

@@ -11,9 +11,9 @@ pub mod misc;
 pub mod quick;
 pub mod select;
 pub fn is_sorted(elements: &[u32]) -> bool {
-    elements.windows(2).all(|w| w[0] <= w[1])
-}
-pub fn shuffle(elements: &mut [u32]) {
-    let mut rng = rand::thread_rng();
-    elements.shuffle(&mut rng);
-}
+        elements.windows(2).all(|w| w[0] <= w[1])
+    }
+pub fn shuffle(elements: &mut[u32]){
+        let mut rng = rand::thread_rng();
+        elements.shuffle(&mut rng);
+    }

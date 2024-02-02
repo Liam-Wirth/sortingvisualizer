@@ -6,5 +6,15 @@ pub use app::MyApp;
 pub mod array;
 mod sorts;
 use sorts::{
-    algorithm, concurrent, distribute, exchange, hybrid, insert, merge, misc, quick, select,
+    concurrent,
+    distribute,
+    exchange,
+    hybrid,
+    insert,
+    merge,
+    misc,
+    quick,
+    select,
+    algorithm,
 };
+

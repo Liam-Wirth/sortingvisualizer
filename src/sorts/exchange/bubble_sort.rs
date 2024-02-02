@@ -29,15 +29,15 @@ impl BubbleSort {
 }
 
 impl Algorithm for BubbleSort {
-    fn step(&mut self, elements: &mut [u32]) -> (bool, &usize) {
+    fn step(&mut self, elements: &mut [u32]) -> (bool,&usize) {
         if self.sorted {
-            return (true, &self.index);
+            return (true,&self.index) 
         }
-        if self.index >= self.max_index - 1 {
-            self.max_index -= 1;
+        if self.index >= self.max_index - 1{
+        self.max_index -=1;
             //check to see if it is sorted
             if is_sorted(elements) {
-                return (true, &self.index);
+                return (true,&self.index) 
             } else {
                 self.index = 0;
             };
