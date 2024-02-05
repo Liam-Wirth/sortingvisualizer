@@ -27,7 +27,7 @@ impl Default for MyApp {
     fn default() -> Self {
         Self {
             label: "SortingVisualizer".to_owned(),
-            array: Array::new(1000),
+            array: Array::new(300),
             sort: None,
         }
     }
@@ -44,30 +44,29 @@ impl MyApp {
 
 impl eframe::App for MyApp {
     fn update(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
-        egui::CentralPanel::default().show(ctx, |ui| { 
+        egui::CentralPanel::default().show(ctx, |ui| {
             // The central panel the region left after adding TopPanel's and SidePanel's
             egui::warn_if_debug_build(ui);
-            //NOTE: this is from the egui discord, I'm pretty sure this operates independant of any other panels, and should control the speed
-            //TODO: see if it is possible to implement a slider in another panel that adjusts the speed of this value
+            // NOTE: this is from the egui discord, I'm pretty sure this operates independant of any other panels, and should control the speed
+            // TODO: see if it is possible to implement a slider in another panel that adjusts the speed of this value
             let deltatime = ui.ctx().input(|i| i.stable_dt);
             if self.array.init {
                 if self.sort.is_none() {
-                    //HACK: clone so that the elements dont get consumed cause otherwise I'd use a
+                    // HACK: clone so that the elements dont get consumed cause otherwise I'd use a
                     //borrow but then i'd need to set lifetimes and that is confusing
-                    //NOTE: jesus christ wtf was I smoking
+                    // NOTE: jesus christ wtf was I smoking
                     self.set_sort(Box::new(BubbleSort::new(self.array.len())));
                 }
-                let sorted:(bool,&usize)= if let Some(sort) = self.sort.as_mut() {
+                let sorted: (bool, &usize) = if let Some(sort) = self.sort.as_mut() {
                     sort.step(&mut self.array.elements)
                 } else {
                     (false, &0)
                 };
                 if sorted.0 {
-                    //TODO: implement that fun final animation for the algorithm that shows the thingy running through the full array, and then flashing it as green    
+                    // TODO: implement that fun final animation for the algorithm that shows the thingy running through the full array, and then flashing it as green
                 };
                 let draw = convert_array(&self.array.elements, ui, sorted.1);
                 ui.painter().extend(draw.clone());
-                
             }
             //ctx.request_repaint_after(Duration::from_micros(1));
             ctx.request_repaint();
@@ -92,7 +91,7 @@ impl eframe::App for MyApp {
                     Vec2::new(element_width, height),
                 );
                 let mut out = Shape::rect_filled(rect, 0.0, Color32::from_rgb(255, 255, 255));
-                if *i == *index as u32{
+                if *i == *index as u32 {
                     out = Shape::rect_filled(rect, 0.0, Color32::from_rgb(255, 0, 0));
                 };
                 elements.push(out);

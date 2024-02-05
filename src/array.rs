@@ -13,6 +13,7 @@ pub struct Array {
     //element_width: f32,
     //element_gap: f32,
     pub init: bool,
+    operations: i32,
 }
 
 impl Array {
@@ -55,6 +56,7 @@ impl Array {
             //element_gap: 2.0,
             //element_width: 2.0,
             init: true,
+            operations: 0,
         }
     }
     pub fn shuffle(&mut self) {
